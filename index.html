@@ -228,19 +228,20 @@ var exp_UNHASFlightLocationsJSON = new L.geoJson(exp_UNHASFlightLocations,{
 layerOrder[layerOrder.length] = exp_UNHASFlightLocationsJSON;
 //add comment sign to hide this layer on the map in the initial view.
 feature_group.addLayer(exp_UNHASFlightLocationsJSON);
-//
+// filler layers
 var dtm = new L.geoJson(exp_IPCLevels,{
-	onEachFeature: pop_IPCLevels,
-	style: doStyleIPCLevels
 });
-
+var rrm = new L.geoJson(exp_IPCLevels,{
+});
+var market = new L.geoJson(exp_IPCLevels,{
+});
 
 raster_group.addTo(map);
 feature_group.addTo(map);
 var baseMaps = {
 	'Humanitarian OSM': basemap
 };
-L.control.layers(baseMaps,{"Displacement Tracking Matrix": dtm,"IPC Levels": exp_IPCLevelsJSON,"UNMAS Hazards": exp_MinesandUXOJSON,"Physical Road Constraints": exp_PhysicalRoadConstraintsJSON,"UNHAS Flight Locations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
+L.control.layers(baseMaps,{"Market Assessments": market,"Rapid Response Mechanism Locations": rrm,"Displacement Tracking Matrix": dtm,"IPC Levels": exp_IPCLevelsJSON,"UNMAS Hazards": exp_MinesandUXOJSON,"Physical Road Constraints": exp_PhysicalRoadConstraintsJSON,"UNHAS Flight Locations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
 var geo = L.control.geonames({username: 'cbi.test', zoomLevel: 14});
         map.addControl(geo);
 
