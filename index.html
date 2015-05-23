@@ -51,9 +51,7 @@
 
 	layerControl = L.control.layers({},{},{collapsed:false});
 
-L.Control.Fullscreen // A fullscreen button. Or use the `{fullscreenControl: true}` option when creating L.Map.
-
-
+	L.Control.Fullscreen // A fullscreen button. Or use the `{fullscreenControl: true}` option when creating L.Map.
 
 function pop_IPCLevels(feature, layer) {					
 	var popupContent = '<table><tr><th scope="row">name</th><td>' + Autolinker.link(String(feature.properties['name'])) + '</td></tr><tr><th scope="row">State</th><td>' + Autolinker.link(String(feature.properties['State'])) + '</td></tr><tr><th scope="row">Phase</th><td>' + Autolinker.link(String(feature.properties['Phase'])) + '</td></tr></table>';
@@ -230,12 +228,19 @@ var exp_UNHASFlightLocationsJSON = new L.geoJson(exp_UNHASFlightLocations,{
 layerOrder[layerOrder.length] = exp_UNHASFlightLocationsJSON;
 //add comment sign to hide this layer on the map in the initial view.
 feature_group.addLayer(exp_UNHASFlightLocationsJSON);
+//
+var dtm = new L.geoJson(exp_IPCLevels,{
+	onEachFeature: pop_IPCLevels,
+	style: doStyleIPCLevels
+});
+
+
 raster_group.addTo(map);
 feature_group.addTo(map);
 var baseMaps = {
 	'Humanitarian OSM': basemap
 };
-L.control.layers(baseMaps,{"Displacement Tracking Matrix":exp_IPCLevelsJSON,"IPC Levels": exp_IPCLevelsJSON,"UNMAS Hazards": exp_MinesandUXOJSON,"Physical Road Constraints": exp_PhysicalRoadConstraintsJSON,"UNHAS Flight Locations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
+L.control.layers(baseMaps,{"Displacement Tracking Matrix": dtm,"IPC Levels": exp_IPCLevelsJSON,"UNMAS Hazards": exp_MinesandUXOJSON,"Physical Road Constraints": exp_PhysicalRoadConstraintsJSON,"UNHAS Flight Locations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
 var geo = L.control.geonames({username: 'cbi.test', zoomLevel: 14});
         map.addControl(geo);
 
