@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Operations Dashboard</title>
+<head>
+	<title>Operations Dashboard</title>
 	
-		<meta charset="utf-8" />
-		<link rel="stylesheet" href="css/leaflet.css" />
-		<link rel="stylesheet" href="css/MarkerCluster.css" />
-		<link rel="stylesheet" href="css/MarkerCluster.Default.css" />
-		<link rel="stylesheet" type="text/css" href="css/qgis2web.css">
-		<link rel="stylesheet" href="css/label.css" />
-		<script src="js/leaflet.js"></script>
-		<script src="js/leaflet-hash.js"></script>
-		<script src="js/label.js"></script>
-		<script src="js/Autolinker.min.js"></script>
-		<script src="js/leaflet.markercluster.js"></script>
-		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	</head>
-	<body>
-		<div id="map"></div>
-<script src="data/exp_IPCLevels.js"></script>
-<script src="data/exp_MinesandUXO.js"></script>
-<script src="data/exp_PhysicalRoadConstraints.js"></script>
-<script src="data/exp_UNHASFlightLocations.js"></script>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="css/leaflet.css" />
+	<link rel="stylesheet" href="css/MarkerCluster.css" />
+	<link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+	<link rel="stylesheet" type="text/css" href="css/qgis2web.css">
+	<link rel="stylesheet" href="css/label.css" />
+	<script src="js/leaflet.js"></script>
+	<script src="js/leaflet-hash.js"></script>
+	<script src="js/label.js"></script>
+	<script src="js/Autolinker.min.js"></script>
+	<script src="js/leaflet.markercluster.js"></script>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+</head>
+<body>
+	<div id="map"></div>
+	<script src="data/exp_IPCLevels.js"></script>
+	<script src="data/exp_MinesandUXO.js"></script>
+	<script src="data/exp_PhysicalRoadConstraints.js"></script>
+	<script src="data/exp_UNHASFlightLocations.js"></script>
+	<script src="js/Control.OSMGeocoder.js"></script>
+	<link rel="stylesheet" href="css/Control.OSMGeocoder.css" />	
+	<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/Leaflet.fullscreen.min.js'></script>
+	<link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.2/leaflet.fullscreen.css' rel='stylesheet' />	
+	<script>
+	var map = L.map('map', {
+		zoomControl:true, maxZoom:28.0, minZoom:7.0, fullscreenControl: true
+	}).fitBounds([[2.79288284243,24.2871712281],[11.2559890037,36.3768275788]]);
 
-<script src="js/Control.OSMGeocoder.js"></script>
-<link rel="stylesheet" href="css/Control.OSMGeocoder.css" />		<script>
-		var map = L.map('map', {
-			zoomControl:true, maxZoom:28.0, minZoom:7.0, fullscreenControl: true
-		}).fitBounds([[2.79288284243,24.2871712281],[11.2559890037,36.3768275788]]);
+	var osmGeocoder = new L.Control.OSMGeocoder();
 
-var osmGeocoder = new L.Control.OSMGeocoder();
+	map.addControl(osmGeocoder);
 
-map.addControl(osmGeocoder);
-
-		var hash = new L.Hash(map);
-		var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
-		var feature_group = new L.featureGroup([]);
-		var raster_group = new L.LayerGroup([]);
-		var basemap = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', { 
-			attribution: additional_attrib + ' &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
-		});	
-		basemap.addTo(map);	
-		var layerOrder=new Array();
-		function restackLayers() {
-			for (index = 0; index < layerOrder.length; index++) {
-				feature_group.removeLayer(layerOrder[index]);
-				feature_group.addLayer(layerOrder[index]);
-			}
+	var hash = new L.Hash(map);
+	var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
+	var feature_group = new L.featureGroup([]);
+	var raster_group = new L.LayerGroup([]);
+	var basemap = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', { 
+		attribution: additional_attrib + ' &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+	});	
+	basemap.addTo(map);	
+	var layerOrder=new Array();
+	function restackLayers() {
+		for (index = 0; index < layerOrder.length; index++) {
+			feature_group.removeLayer(layerOrder[index]);
+			feature_group.addLayer(layerOrder[index]);
 		}
+	}
 
-		layerControl = L.control.layers({},{},{collapsed:false});
+	layerControl = L.control.layers({},{},{collapsed:false});
 
 L.Control.Fullscreen // A fullscreen button. Or use the `{fullscreenControl: true}` option when creating L.Map.
 
@@ -60,59 +62,59 @@ function pop_IPCLevels(feature, layer) {
 	layer.bindPopup(popupContent);
 }
 
-	function doStyleIPCLevels(feature) {
-		switch (feature.properties.Phase) {
-			case '1':
-				return {
-					weight: '0.0',
-					fillColor: '#fecc5c',
-					color: '#000000',
-					weight: '0',
-					dashArray: '',
-					opacity: '0.5',
-					fillOpacity: '0.5',
-				};
-				break;
-			case '2':
-				return {
-					weight: '0.0',
-					fillColor: '#fd8d3c',
-					color: 'red',
-					weight: '0',
-					dashArray: '',
-					opacity: '0.5',
-					fillOpacity: '0.5',
-				};
-				break;
-			case '3':
-				return {
-					weight: '0.0',
-					fillColor: '#f03b20',
-					color: '#000000',
-					weight: '0',
-					dashArray: '',
-					opacity: '0.5',
-					fillOpacity: '0.5',
-				};
-				break;
-			case '4':
-				return {
-					weight: '0.0',
-					fillColor: '#bd0026',
-					color: '#000000',
-					weight: '0',
-					dashArray: '',
-					opacity: '0.5',
-					fillOpacity: '0.5',
-				};
-				break;
-		}
+function doStyleIPCLevels(feature) {
+	switch (feature.properties.Phase) {
+		case '1':
+		return {
+			weight: '0.0',
+			fillColor: '#fecc5c',
+			color: '#000000',
+			weight: '0',
+			dashArray: '',
+			opacity: '0.5',
+			fillOpacity: '0.5',
+		};
+		break;
+		case '2':
+		return {
+			weight: '0.0',
+			fillColor: '#fd8d3c',
+			color: 'red',
+			weight: '0',
+			dashArray: '',
+			opacity: '0.5',
+			fillOpacity: '0.5',
+		};
+		break;
+		case '3':
+		return {
+			weight: '0.0',
+			fillColor: '#f03b20',
+			color: '#000000',
+			weight: '0',
+			dashArray: '',
+			opacity: '0.5',
+			fillOpacity: '0.5',
+		};
+		break;
+		case '4':
+		return {
+			weight: '0.0',
+			fillColor: '#bd0026',
+			color: '#000000',
+			weight: '0',
+			dashArray: '',
+			opacity: '0.5',
+			fillOpacity: '0.5',
+		};
+		break;
 	}
-		var exp_IPCLevelsJSON = new L.geoJson(exp_IPCLevels,{
-			onEachFeature: pop_IPCLevels,
-			style: doStyleIPCLevels
-		});
-		layerOrder[layerOrder.length] = exp_IPCLevelsJSON;
+}
+var exp_IPCLevelsJSON = new L.geoJson(exp_IPCLevels,{
+	onEachFeature: pop_IPCLevels,
+	style: doStyleIPCLevels
+});
+layerOrder[layerOrder.length] = exp_IPCLevelsJSON;
 //add comment sign to hide this layer on the map in the initial view.
 /*feature_group.addLayer(exp_IPCLevelsJSON);
 */function pop_MinesandUXO(feature, layer) {					
@@ -120,53 +122,53 @@ function pop_IPCLevels(feature, layer) {
 	layer.bindPopup(popupContent);
 }
 
-	function doStyleMinesandUXO(feature) {
-		switch (feature.properties.Status) {
-			case 'Active':
-				return {
-					radius: '4.0',
-					fillColor: '#e31a1c',
-					color: '#000000',
-					weight: 1,
-					fillOpacity: '1.0',
-				};
-				break;
-			case 'Expired':
-				return {
-					radius: '4.0',
-					fillColor: '#3acb20',
-					color: '#000000',
-					weight: 1,
-					fillOpacity: '1.0',
-				};
-				break;
-			case 'Non Confirmed':
-				return {
-					radius: '4.0',
-					fillColor: '#ff7f00',
-					color: '#000000',
-					weight: 1,
-					fillOpacity: '1.0',
-				};
-				break;
-			default:
-				return {
-					radius: '4.0',
-					fillColor: '#bf79cb',
-					color: '#000000',
-					weight: 1,
-					fillOpacity: '1.0',
-				};
-				break;
-		}
+function doStyleMinesandUXO(feature) {
+	switch (feature.properties.Status) {
+		case 'Active':
+		return {
+			radius: '4.0',
+			fillColor: '#e31a1c',
+			color: '#000000',
+			weight: 1,
+			fillOpacity: '1.0',
+		};
+		break;
+		case 'Expired':
+		return {
+			radius: '4.0',
+			fillColor: '#3acb20',
+			color: '#000000',
+			weight: 1,
+			fillOpacity: '1.0',
+		};
+		break;
+		case 'Non Confirmed':
+		return {
+			radius: '4.0',
+			fillColor: '#ff7f00',
+			color: '#000000',
+			weight: 1,
+			fillOpacity: '1.0',
+		};
+		break;
+		default:
+		return {
+			radius: '4.0',
+			fillColor: '#bf79cb',
+			color: '#000000',
+			weight: 1,
+			fillOpacity: '1.0',
+		};
+		break;
 	}
-	var exp_MinesandUXOJSON = new L.geoJson(exp_MinesandUXO,{
-		onEachFeature: pop_MinesandUXO,
-		pointToLayer: function (feature, latlng) {  
-			return L.circleMarker(latlng, doStyleMinesandUXO(feature))
-		}
-	});
-		layerOrder[layerOrder.length] = exp_MinesandUXOJSON;
+}
+var exp_MinesandUXOJSON = new L.geoJson(exp_MinesandUXO,{
+	onEachFeature: pop_MinesandUXO,
+	pointToLayer: function (feature, latlng) {  
+		return L.circleMarker(latlng, doStyleMinesandUXO(feature))
+	}
+});
+layerOrder[layerOrder.length] = exp_MinesandUXOJSON;
 //add comment sign to hide this layer on the map in the initial view.
 feature_group.addLayer(exp_MinesandUXOJSON);
 function pop_PhysicalRoadConstraints(feature, layer) {					
@@ -174,39 +176,39 @@ function pop_PhysicalRoadConstraints(feature, layer) {
 	layer.bindPopup(popupContent);
 }
 
-	function doStylePhysicalRoadConstraints(feature) {
-		switch (feature.properties.Status) {
-			case 'Closed':
-				return {
-					color: '#e31a1c',
-					weight: '10.0',
-					dashArray: '',
-					opacity: '1.0',
-				};
-				break;
-			case 'Warning':
-				return {
-					color: '#ff7f00',
-					weight: '10.0',
-					dashArray: '',
-					opacity: '1.0',
-				};
-				break;
-			default:
-				return {
-					color: '#33a02c',
-					weight: '10.0',
-					dashArray: '',
-					opacity: '1.0',
-				};
-				break;
-		}
+function doStylePhysicalRoadConstraints(feature) {
+	switch (feature.properties.Status) {
+		case 'Closed':
+		return {
+			color: '#e31a1c',
+			weight: '10.0',
+			dashArray: '',
+			opacity: '1.0',
+		};
+		break;
+		case 'Warning':
+		return {
+			color: '#ff7f00',
+			weight: '10.0',
+			dashArray: '',
+			opacity: '1.0',
+		};
+		break;
+		default:
+		return {
+			color: '#33a02c',
+			weight: '10.0',
+			dashArray: '',
+			opacity: '1.0',
+		};
+		break;
 	}
-		var exp_PhysicalRoadConstraintsJSON = new L.geoJson(exp_PhysicalRoadConstraints,{
-			onEachFeature: pop_PhysicalRoadConstraints,
-			style: doStylePhysicalRoadConstraints
-		});
-		layerOrder[layerOrder.length] = exp_PhysicalRoadConstraintsJSON;
+}
+var exp_PhysicalRoadConstraintsJSON = new L.geoJson(exp_PhysicalRoadConstraints,{
+	onEachFeature: pop_PhysicalRoadConstraints,
+	style: doStylePhysicalRoadConstraints
+});
+layerOrder[layerOrder.length] = exp_PhysicalRoadConstraintsJSON;
 //add comment sign to hide this layer on the map in the initial view.
 feature_group.addLayer(exp_PhysicalRoadConstraintsJSON);
 function pop_UNHASFlightLocations(feature, layer) {					
@@ -214,29 +216,29 @@ function pop_UNHASFlightLocations(feature, layer) {
 	layer.bindPopup(popupContent);
 }
 
-	var exp_UNHASFlightLocationsJSON = new L.geoJson(exp_UNHASFlightLocations,{
-		onEachFeature: pop_UNHASFlightLocations,
-		pointToLayer: function (feature, latlng) {  
-			return L.circleMarker(latlng, {
-				radius: 8.0,
-				fillColor: '#1f78b4',
-				color: '#1f78b4',
-				weight: 1,
-				opacity: 1.0,
-				fillOpacity: 1.0
-			})
-		}
-	});
-	layerOrder[layerOrder.length] = exp_UNHASFlightLocationsJSON;
+var exp_UNHASFlightLocationsJSON = new L.geoJson(exp_UNHASFlightLocations,{
+	onEachFeature: pop_UNHASFlightLocations,
+	pointToLayer: function (feature, latlng) {  
+		return L.circleMarker(latlng, {
+			radius: 8.0,
+			fillColor: '#1f78b4',
+			color: '#1f78b4',
+			weight: 1,
+			opacity: 1.0,
+			fillOpacity: 1.0
+		})
+	}
+});
+layerOrder[layerOrder.length] = exp_UNHASFlightLocationsJSON;
 //add comment sign to hide this layer on the map in the initial view.
 feature_group.addLayer(exp_UNHASFlightLocationsJSON);
-		raster_group.addTo(map);
-		feature_group.addTo(map);
-	var baseMaps = {
-		'OSM HOT': basemap
-	};
-		L.control.layers(baseMaps,{"IPCLevels": exp_IPCLevelsJSON,"MinesandUXO": exp_MinesandUXOJSON,"PhysicalRoadConstraints": exp_PhysicalRoadConstraintsJSON,"UNHASFlightLocations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
-		L.control.scale({options: {position: 'bottomleft',maxWidth: 100,metric: true,imperial: false,updateWhenIdle: false}}).addTo(map);
-	</script>
+raster_group.addTo(map);
+feature_group.addTo(map);
+var baseMaps = {
+	'OSM HOT': basemap
+};
+L.control.layers(baseMaps,{"IPCLevels": exp_IPCLevelsJSON,"MinesandUXO": exp_MinesandUXOJSON,"PhysicalRoadConstraints": exp_PhysicalRoadConstraintsJSON,"UNHASFlightLocations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
+L.control.scale({options: {position: 'bottomleft',maxWidth: 100,metric: true,imperial: false,updateWhenIdle: false}}).addTo(map);
+</script>
 </body>
 </html>
