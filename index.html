@@ -35,11 +35,10 @@
 	}).fitBounds([[2.79288284243,24.2871712281],[11.2559890037,36.3768275788]]);
 
 	var hash = new L.Hash(map);
-	var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
 	var feature_group = new L.featureGroup([]);
 	var raster_group = new L.LayerGroup([]);
 	var basemap = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', { 
-		attribution: additional_attrib + ' &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+		attribution: additional_attrib + '<a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap</a>'
 	});	
 	basemap.addTo(map);	
 	var layerOrder=new Array();
