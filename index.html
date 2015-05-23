@@ -26,10 +26,18 @@
 	<link rel="stylesheet" href="css/Control.OSMGeocoder.css" />	
 	<script src='js/Leaflet.fullscreen.min.js'></script>
 	<link href='css//leaflet.fullscreen.css' rel='stylesheet' />	
+
+	<script src="js/l.control.geosearch.js"></script>
+	<script src="js/l.geosearch.provider.openstreetmap.js"></script>
 	<script>
 	var map = L.map('map', {
 		zoomControl:true, maxZoom:28.0, minZoom:7.0, fullscreenControl: true
 	}).fitBounds([[2.79288284243,24.2871712281],[11.2559890037,36.3768275788]]);
+
+//
+	new L.Control.GeoSearch({
+        provider: new L.GeoSearch.Provider.OpenStreetMap()
+    }).addTo(map);
 
 	var osmGeocoder = new L.Control.OSMGeocoder();
 
