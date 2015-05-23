@@ -237,8 +237,8 @@ var baseMaps = {
 	'OSM HOT': basemap
 };
 L.control.layers(baseMaps,{"IPCLevels": exp_IPCLevelsJSON,"MinesandUXO": exp_MinesandUXOJSON,"PhysicalRoadConstraints": exp_PhysicalRoadConstraintsJSON,"UNHASFlightLocations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
-var control = L.control.geonames({username: 'cbi.test'});
-        map.addControl(control);
+var geo = L.control.geonames({username: 'cbi.test'});
+        map.addControl(geo);
 
 
 </script>
