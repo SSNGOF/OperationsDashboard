@@ -29,6 +29,12 @@
 		var map = L.map('map', {
 			zoomControl:true, maxZoom:28.0, minZoom:7.0, fullscreenControl: true
 		}).fitBounds([[2.79288284243,24.2871712281],[11.2559890037,36.3768275788]]);
+
+		<!--geosearch-->
+		new L.Control.GeoSearch({
+		        provider: new L.GeoSearch.Provider.OpenStreetMap()
+		    }).addTo(map);
+
 		var hash = new L.Hash(map);
 		var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
 		var feature_group = new L.featureGroup([]);
@@ -49,10 +55,6 @@
 
 L.Control.Fullscreen // A fullscreen button. Or use the `{fullscreenControl: true}` option when creating L.Map.
 
-<!--geosearch-->
-new L.Control.GeoSearch({
-    provider: new L.GeoSearch.Provider.OpenStreetMap()
-}).addTo(map);
 
 
 function pop_IPCLevels(feature, layer) {					
