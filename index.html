@@ -240,6 +240,7 @@ var baseMaps = {
 	'OSM HOT': basemap
 };
 L.control.layers(baseMaps,{"IPCLevels": exp_IPCLevelsJSON,"MinesandUXO": exp_MinesandUXOJSON,"PhysicalRoadConstraints": exp_PhysicalRoadConstraintsJSON,"UNHASFlightLocations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
+L.control.scale({options: {position: 'bottomleft',maxWidth: 100,metric: true,imperial: false,updateWhenIdle: false}}).addTo(map);
 
 
 </script>
