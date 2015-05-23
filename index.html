@@ -49,6 +49,11 @@
 
 L.Control.Fullscreen // A fullscreen button. Or use the `{fullscreenControl: true}` option when creating L.Map.
 
+<!--geosearch-->
+new L.Control.GeoSearch({
+    provider: new L.GeoSearch.Provider.OpenStreetMap()
+}).addTo(map);
+
 
 function pop_IPCLevels(feature, layer) {					
 	var popupContent = '<table><tr><th scope="row">name</th><td>' + Autolinker.link(String(feature.properties['name'])) + '</td></tr><tr><th scope="row">State</th><td>' + Autolinker.link(String(feature.properties['State'])) + '</td></tr><tr><th scope="row">Phase</th><td>' + Autolinker.link(String(feature.properties['Phase'])) + '</td></tr></table>';
