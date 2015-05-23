@@ -24,7 +24,7 @@
 <script src="data/exp_UNHASFlightLocations.js"></script>
 		<script>
 		var map = L.map('map', {
-			zoomControl:true, maxZoom:28.0, minZoom:7.0
+			zoomControl:true, maxZoom:28.0, minZoom:7.0, fullscreenControl: true
 		}).fitBounds([[2.79288284243,24.2871712281],[11.2559890037,36.3768275788]]);
 		var hash = new L.Hash(map);
 		var additional_attrib = '<a href="https://github.com/tomchadwin/qgis2web" target ="_blank">qgis2web</a>';
@@ -43,6 +43,22 @@
 		}
 
 		layerControl = L.control.layers({},{},{collapsed:false});
+<!--fullscreen test-->
+map.isFullscreen() // Is the map fullscreen?
+map.toggleFullscreen() // Either go fullscreen, or cancel the existing fullscreen.
+
+// `fullscreenchange` Event that's fired when entering or exiting fullscreen.
+map.on('fullscreenchange', function () {
+    if (map.isFullscreen()) {
+        console.log('entered fullscreen');
+    } else {
+        console.log('exited fullscreen');
+    }
+});
+
+L.Control.Fullscreen // A fullscreen button. Or use the `{fullscreenControl: true}` option when creating L.Map.
+
+
 function pop_IPCLevels(feature, layer) {					
 	var popupContent = '<table><tr><th scope="row">name</th><td>' + Autolinker.link(String(feature.properties['name'])) + '</td></tr><tr><th scope="row">State</th><td>' + Autolinker.link(String(feature.properties['State'])) + '</td></tr><tr><th scope="row">Phase</th><td>' + Autolinker.link(String(feature.properties['Phase'])) + '</td></tr></table>';
 	layer.bindPopup(popupContent);
