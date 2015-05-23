@@ -35,7 +35,7 @@
 		zoomControl:true, maxZoom:28.0, minZoom:7.0, fullscreenControl: true
 	}).fitBounds([[2.79288284243,24.2871712281],[11.2559890037,36.3768275788]]);
 
-	var control = L.control.geonames({
+	var geo = L.control.geonames({
 	    username: 'brianmcdonald',  // Geonames account username.  Must be provided
 	    zoomLevel: null,  // Max zoom level to zoom to for location.  If null, will use the map's max zoom level.
 	    maxresults: 5,  // Maximum number of results to display per search
@@ -45,7 +45,7 @@
 	    baseQuery: 'isNameRequired=true',  // The core query sent to GeoNames, later combined with other parameters above
 	    position: 'topleft'
 	});
-	map.addControl(control);
+	map.addControl(geo);
 
 
 
