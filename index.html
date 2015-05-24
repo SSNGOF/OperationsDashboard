@@ -34,6 +34,13 @@
 		zoomControl:true, maxZoom:28.0, minZoom:7.0, fullscreenControl: true
 	}).fitBounds([[2.79288284243,24.2871712281],[11.2559890037,36.3768275788]]);
 
+	//
+	geojson_layer.eachLayer(function (layer) {  
+	  if(layer.feature.properties.NAME == 'feature 1') {    
+	    layer.setStyle({fillColor :'blue'}) 
+	  }
+	});
+
 	var hash = new L.Hash(map);
 	var feature_group = new L.featureGroup([]);
 	var raster_group = new L.LayerGroup([]);
@@ -41,6 +48,10 @@
 		attribution: '<a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap</a>'
 	});	
 	basemap.addTo(map);	
+	var basemap2 = L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', { 
+			attribution: additional_attrib + ' Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+	});	
+
 	var layerOrder=new Array();
 	function restackLayers() {
 		for (index = 0; index < layerOrder.length; index++) {
@@ -57,6 +68,13 @@ function pop_IPCLevels(feature, layer) {
 	var popupContent = '<table><tr><th scope="row">name</th><td>' + Autolinker.link(String(feature.properties['name'])) + '</td></tr><tr><th scope="row">State</th><td>' + Autolinker.link(String(feature.properties['State'])) + '</td></tr><tr><th scope="row">Phase</th><td>' + Autolinker.link(String(feature.properties['Phase'])) + '</td></tr></table>';
 	layer.bindPopup(popupContent);
 }
+
+	//
+	geojson_layer.eachLayer(function (layer) {  
+	  if(layer.feature.properties.NAME == 'State') {    
+	    layer.setStyle({fillColor :'color: "red", weight: 1}'}) 
+	  }
+	});
 
 function doStyleIPCLevels(feature) {
 	switch (feature.properties.Phase) {
@@ -239,7 +257,8 @@ var market = new L.geoJson(exp_IPCLevels,{
 raster_group.addTo(map);
 feature_group.addTo(map);
 var baseMaps = {
-	'Humanitarian OSM': basemap
+	'Humanitarian OSM': basemap,
+	'Satellite': basemap2
 };
 L.control.layers(baseMaps,{"Market Assessments": market,"Rapid Response Mechanism Locations": rrm,"Displacement Tracking Matrix": dtm,"IPC Levels": exp_IPCLevelsJSON,"UNMAS Hazards": exp_MinesandUXOJSON,"Physical Road Constraints": exp_PhysicalRoadConstraintsJSON,"UNHAS Flight Locations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
 var geo = L.control.geonames({username: 'cbi.test', zoomLevel: 14});
