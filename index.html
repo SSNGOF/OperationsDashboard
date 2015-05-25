@@ -241,7 +241,7 @@ feature_group.addTo(map);
 var baseMaps = {
 	'Humanitarian OSM': basemap
 };
-L.control.layers(baseMaps,{"Market Assessments": market,"Rapid Response Mechanism Locations": rrm,"Displacement Tracking Matrix": dtm,"IPC Levels": exp_IPCLevelsJSON,"UNMAS Hazards": exp_MinesandUXOJSON,"Physical Road Constraints": exp_PhysicalRoadConstraintsJSON,"UNHAS Flight Locations": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
+L.control.layers(baseMaps,{"Market Assessments": market,"Rapid Response Mechanism Locations(incomplete)": rrm,"Displacement Tracking Matrix(incomplete)": dtm,"IPC Levels": exp_IPCLevelsJSON,"UNMAS Hazards(15April2015)": exp_MinesandUXOJSON,"Physical Road Constraints(15May2015)": exp_PhysicalRoadConstraintsJSON,"UNHAS Flight Locations(08May2015)": exp_UNHASFlightLocationsJSON},{collapsed:false}).addTo(map);
 var geo = L.control.geonames({username: 'cbi.test', zoomLevel: 14});
         map.addControl(geo);
 
